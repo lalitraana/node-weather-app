@@ -21,7 +21,7 @@ hbs.registerPartials(partialsPath)
 //This will set up our static file at home route
 app.use(express.static(publicDirectoryPath))
 
-
+console.log('hello')
 // app.get('/',(req, res)=>{
 //     res.send('Hello express!') this is not in use anymore because above code will throw files on home route 
 
