@@ -1,12 +1,12 @@
 const path = require('path')
 const express = require('express')
-const app = express();
 const hbs = require('hbs')
-const geocode= require('./utils/geocode')
+const geocode = require('./utils/geocode')
 const forecast = require('./utils/forecast')
 
-//console.log(path.join(__dirname,'../public'))
-// console.log(__filename)
+const app = express();
+const port = process.env.PORT || 3000
+
 
 //Define  path for express
 const publicDirectoryPath = path.join(__dirname, '../public')
@@ -57,25 +57,25 @@ app.get('/weather', (req, res) => {
             error: "You must provide an address"
         })
     }
-// most important point we have given default empty object if location is not found the server will not
-     geocode(req.query.address, (error,{lattitude, longitude , location}={})=>{
-         if(error) {
-             return res.send({error })
-         }
-              
-          forecast(lattitude, longitude, (error, forecastData )=>{
-           if(error){
-               return res.send({error})
-           }
-            res.send({
-                forecast:forecastData,
-                location,
-                address:req.query.address
+    // most important point we have given default empty object if location is not found the server will not
+    geocode(req.query.address, (error, { lattitude, longitude, location } = {}) => {
+        if (error) {
+            return res.send({ error })
+        }
 
-            })  
-            
-          })
-     })
+        forecast(lattitude, longitude, (error, forecastData) => {
+            if (error) {
+                return res.send({ error })
+            }
+            res.send({
+                forecast: forecastData,
+                location,
+                address: req.query.address
+
+            })
+
+        })
+    })
 
 
 
@@ -120,7 +120,7 @@ app.get("*", (req, res) => {
     })
 })
 
-app.listen(3000, () => {
-    console.log('Server is running on port 3000')
+app.listen(port, () => {
+    console.log('Server is running on port ' + port)
 })
 
